@@ -1,5 +1,18 @@
-#!/usr/bin/env sh
-echo "\x1B:wq\x0A" | git rebase $1 -i
-GIT_COMMITTER_DATE="$2"
-git commit --amend --no-edit --date "$2"
-git rebase --continue
+#!/usr/bin/env bash
+
+if [[ $# -ne 2 ]]; then
+    echo 'usage: date_rewrite.sh COMMIT_HASH NEW_DATE';
+    exit 1;
+fi
+
+COMMIT=$(git rev-parse --short $1)
+DATE="$2"
+
+{
+    GIT_SEQUENCE_EDITOR="sed -i -e 's/^pick $COMMIT/edit $COMMIT/'";
+    GIT_COMMITER_DATE="$DATE";
+
+    git rebase -i $COMMIT~1^^ 
+    git commit --amend --no-edit --author="$AUTHOR"
+    git rebase --continue
+} &> /dev/null

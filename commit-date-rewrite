@@ -12,7 +12,7 @@ DATE="$2"
     GIT_COMMITER_DATE="$DATE";
 
     git rebase -i $COMMIT~1^^ 
-    git commit --amend --no-edit --author="$AUTHOR"
+    git commit --amend --no-edit --date "$DATE"
     git rebase --continue
 }
 # } &> /dev/null

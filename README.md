@@ -4,7 +4,7 @@ Did you submit your homework to gitlab after the deadline and are trying to conv
 your professor you're not a lazy student! Well look no further. This is the tool for you!
 
 With the Git Commit Date Changer, you can make it look like you were actually working on your
-school when you were actually watching hanging out with your friends.
+school when you were actually playing [vimgolf](https://www.vimgolf.com/).
 
 ## Command Line Usage
 ```

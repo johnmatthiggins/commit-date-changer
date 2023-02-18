@@ -1,6 +1,6 @@
 # Git Commit Date Changer
 
-Did you submit your homework to gitlab after the deadline and are trying to convince
+Did you submit your homework to GitLab after the deadline and are trying to convince
 your professor you're not a lazy student! Well look no further. This is the tool for you!
 
 With the Git Commit Date Changer, you can make it look like you were actually working on your

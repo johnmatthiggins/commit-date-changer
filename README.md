@@ -1,4 +1,10 @@
-# WIP
+# Git Commit Date Changer
+
+Did you submit your homework to gitlab after the deadline and are trying to convince
+your professor you're not a lazy student! Well look no further. This is the tool for you!
+
+With the Git Commit Date Changer, you can make it look like you were actually working on your
+school when you were actually watching hanging out with your friends.
 
 ## Command Line Usage
 ```
@@ -16,3 +22,4 @@ Using a past date:
 ```
 $ ./change-commit-date 3e4bb9ae8dc7caa2da0805f7a048350f93673577 "Fri Feb 17 06:42:58 PM PST 2023"
 ```
+

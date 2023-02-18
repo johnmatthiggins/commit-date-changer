@@ -4,6 +4,7 @@ use warnings;
 
 my $arg_count = $#ARGV + 1;
 
+# use this when getting output of commands.
 sub chop_newline {
     my $str = $_[0];
     my $trimmed = substr($str, 0, (length($str) - 1));
@@ -17,7 +18,6 @@ if ($arg_count != 2) {
 } else {
     my $commit = chop_newline(`git rev-parse --short $ARGV[0]`);
     my $date = $ARGV[1];
-    print "$commit\n";
 
     my $commit_editor = "sed -i -e 's/^pick $commit/edit $commit/'";
     my $old_editor    = chop_newline(`git config core.editor`);

@@ -23,3 +23,5 @@ Using a past date:
 $ ./change-commit-date 3e4bb9ae8dc7caa2da0805f7a048350f93673577 "Fri Feb 17 06:42:58 PM PST 2023"
 ```
 
+After you make these changes, you will have to run `git push --force` to force update the branch's
+history.

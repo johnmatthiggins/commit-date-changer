@@ -14,4 +14,3 @@ COMMIT=$(git rev-parse --short $1)
     git commit --amend --no-edit --date "$GIT_COMMITER_DATE"
     git rebase --continue
 }
-# } &> /dev/null

@@ -1,0 +1,30 @@
+#!/usr/bin/perl -w
+use strict;
+use warnings;
+
+my $arg_count = $#ARGV + 1;
+
+sub chop_newline {
+    my $str = $_[0];
+    my $trimmed = substr($str, 0, (length($str) - 1));
+
+    return $trimmed;
+}
+
+if ($arg_count != 2) {
+    print "usage: change-commit-date COMMIT DATE\n";
+    exit 1;
+} else {
+    my $commit = chop_newline(`git rev-parse --short $ARGV[0]`);
+    my $date = $ARGV[1];
+    print "$commit\n";
+
+    my $commit_editor = "sed -i -e 's/^pick $commit/edit $commit/'";
+    my $old_editor    = chop_newline(`git config core.editor`);
+
+    system("git config core.editor \"$commit_editor\" --replace-all");
+    system("git rebase -i $commit^");
+    system("GIT_COMMITER_DATE='$date' git commit --amend --no-edit --date '$date'");
+    system("git rebase --continue");
+    system("git config core.editor \"$old_editor\" --replace-all");
+}

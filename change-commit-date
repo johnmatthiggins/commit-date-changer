@@ -16,15 +16,37 @@ if ($arg_count != 2) {
     print "usage: change-commit-date COMMIT DATE\n";
     exit 1;
 } else {
-    my $commit = chop_newline(`git rev-parse --short $ARGV[0]`);
+    my $commit = $ARGV[0];
+
+    # if the commit isn't in the short format,
+    # then we chop it down using rev-parse.
+    if (length($commit) != 7)
+    {
+        $commit = chop_newline(`git rev-parse --short $ARGV[0]`);
+    }
+
     my $date = $ARGV[1];
 
+    # substitute this for our current editor.
+    # then instead of being prompted with vim after rebasing this command
+    # do all the work for us.
     my $commit_editor = "sed -i -e 's/^pick $commit/edit $commit/'";
+
+    # save old editor so we can reset it later.
     my $old_editor    = chop_newline(`git config core.editor`);
 
+    # replace old editor with sed command.
     system("git config core.editor \"$commit_editor\" --replace-all");
+
+    # run rebase which will trigger sed command.
     system("git rebase -i $commit^");
+
+    # switch the date to the desired date.
     system("GIT_COMMITER_DATE='$date' git commit --amend --no-edit --date '$date'");
+
+    # finish rebasing.
     system("git rebase --continue");
+
+    # reset back to old editor because 'sed' isn't a real editor.
     system("git config core.editor \"$old_editor\" --replace-all");
 }

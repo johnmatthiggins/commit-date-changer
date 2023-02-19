@@ -2,17 +2,9 @@
 use strict;
 use warnings;
 
-my $arg_count = $#ARGV + 1;
-
-# use this when getting output of commands.
-sub chop_newline {
-    my $str = $_[0];
-    my $trimmed = substr($str, 0, (length($str) - 1));
-
-    return $trimmed;
-}
-
 sub main {
+    my $arg_count = $#ARGV + 1;
+
     if ($arg_count != 2) {
         print "usage: change-commit-date COMMIT_HASH DATE\n";
         exit 1;
@@ -37,20 +29,49 @@ sub main {
         my $old_editor    = chop_newline(`git config core.editor`);
 
         # replace old editor with sed command.
-        system("git config core.editor \"$commit_editor\" --replace-all");
+        set_git_editor($commit_editor);
 
         # run rebase which will trigger sed command.
-        system("git rebase -i $commit^");
+        rebase($commit);
 
         # switch the date to the desired date.
-        system("GIT_COMMITER_DATE='$date' git commit --amend --no-edit --date '$date'");
+        change_date($date);
 
         # finish rebasing.
-        system("git rebase --continue");
+        continue_rebase();
 
         # reset back to old editor because 'sed' isn't a real editor.
-        system("git config core.editor \"$old_editor\" --replace-all");
+        set_git_editor($old_editor);
     }
+}
+
+sub rebase {
+    system("git rebase -i $_[0]")
+}
+
+sub change_date
+{
+    my $date = $_[0];
+
+    # switch the date to the desired date.
+    system("GIT_COMMITER_DATE='$date' git commit --amend --no-edit --date '$date'");
+}
+
+sub continue_rebase {
+    system("git rebase --continue");
+}
+
+# use this when getting output of commands.
+sub chop_newline {
+    my $str = $_[0];
+    my $trimmed = substr($str, 0, (length($str) - 1));
+
+    return $trimmed;
+}
+
+sub set_git_editor {
+    my $old_editor = $_[0];
+    system("git config core.editor \"$old_editor\" --replace-all");
 }
 
 main
